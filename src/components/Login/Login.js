@@ -57,17 +57,22 @@ const Login = (props) => {
     };
   }, []);
 
+  // constants for useEffect dependencies to keep it from running too many times
+    // destructuring
+  const { isValid: emailIsValid } = emailState;
+  const { isValid: passwordIsValid } = passwordState;
+
   useEffect(() => {
     const identifier = setTimeout(() => {
       console.log("Checking form validity!");
-      setFormIsValid(emailState.isValid && passwordState.isValid);
+      setFormIsValid(emailIsValid && passwordIsValid);
     }, 500);
 
     return () => {
       console.log("CLEANUP");
       clearTimeout(identifier);
     };
-  }, [emailState, passwordState]);
+  }, [emailIsValid, passwordIsValid]);
 
   const emailChangeHandler = (event) => {
     dispatchEmail({ type: "USER_INPUT", val: event.target.value });
